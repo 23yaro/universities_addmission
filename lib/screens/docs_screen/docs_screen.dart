@@ -5,14 +5,36 @@ class DocsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const Map<String, List<String>> textData = {
+      'Персональные данные': ['Имя', 'Фамилия', 'Отчесвто'],
+      'Паспортные данные': ['Серия', 'Номер', 'Кем выдан'],
+      'ВУЗ': ['Факультет', 'Направление', 'Форма обучения'],
+    };
+
+    const List<String> fileData = [
+      'Заявление на поступление',
+      'Медсправка',
+      'Аттестат',
+    ];
+
+    List<Widget> textGroups = textData.entries
+        .map(
+          (e) => GroupWidget(
+            groupName: e.key,
+            children: e.value.map((e) => TextFormWidget(text: e)).toList(),
+          ),
+        )
+        .toList();
+
+    List<Widget> fileGroups =
+        fileData.map((e) => FileFormWidget(text: e)).toList();
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Документы'),
+      ),
       body: ListView(
-        children: const [
-          GroupWidget(
-            groupName: 'Персональные данные',
-            forms: personalData,
-          )
-        ],
+        children: [...textGroups, ...fileGroups],
       ),
     );
   }
@@ -20,35 +42,85 @@ class DocsScreen extends StatelessWidget {
 
 class GroupWidget extends StatelessWidget {
   final String groupName;
-  final List<String> forms;
+  final List<Widget> children;
 
-  const GroupWidget({super.key, required this.groupName, required this.forms});
+  const GroupWidget({
+    super.key,
+    required this.groupName,
+    required this.children,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(
         children: [
-          Text(groupName),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(groupName)),
           Column(
-            children: forms
-                .map(
-                  (e) => Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: TextField(
-                        decoration: InputDecoration(hintText: e,border: InputBorder.none),
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+            children: children,
           ),
+          const SizedBox(
+            height: 10,
+          )
         ],
       ),
     );
   }
 }
 
-const List<String> personalData = ['Имя', 'Фамилия', 'Отчесвто'];
+class TextFormWidget extends StatelessWidget {
+  final String text;
+
+  const TextFormWidget({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: text,
+            border: InputBorder.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FileFormWidget extends StatelessWidget {
+  final String text;
+
+  const FileFormWidget({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: [
+            const SizedBox(width: 10),
+            Expanded(child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Text(text),
+            )),
+            IconButton(
+              icon: const Icon(Icons.upload),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

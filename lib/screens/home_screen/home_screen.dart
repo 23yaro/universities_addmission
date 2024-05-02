@@ -6,6 +6,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Главная'),
+      ),
       body: ListView(
         children: homeScreenMenu,
       ),
@@ -55,5 +58,10 @@ const List<Widget> homeScreenMenu = [
     titleText: 'Задать вопрос',
     leadingIcon: Icon(Icons.question_mark),
     routName: '/home_screen/question',
-  )
+  ),
+  HomeCard(
+    titleText: 'Vote Putin',
+    leadingIcon: Icon(Icons.accessible_forward_sharp),
+    routName: '',
+  ),
 ];
