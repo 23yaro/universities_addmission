@@ -9,8 +9,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Главная'),
       ),
-      body: ListView(
-        children: homeScreenMenu,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ListView(
+          children: homeScreenMenu,
+        ),
       ),
     );
   }
@@ -30,38 +33,41 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: leadingIcon,
-        title: Text(titleText),
-        trailing: IconButton(
-          onPressed: () => Navigator.pushNamed(context, routName),
-          icon: const Icon(Icons.navigate_next),
+    return Column(children: [
+
+      Card(
+        child: ListTile(
+          leading: leadingIcon,
+          title: Text(titleText),
+          trailing: IconButton(
+            onPressed: () => Navigator.pushNamed(context, routName),
+            icon: const Icon(Icons.navigate_next),
+          ),
         ),
       ),
-    );
+    ]);
   }
 }
 
 const List<Widget> homeScreenMenu = [
+  SizedBox(height: 25,),
+  SizedBox(height: 100,child: Text('Здравствуйте, вы можете воспользоваться следующими сервисами',style: TextStyle(fontSize: 24),)),
+  SizedBox(height: 25,),
   HomeCard(
     titleText: 'Подать документы',
     leadingIcon: Icon(Icons.library_books),
     routName: '/home_screen/docs',
   ),
+  SizedBox(height: 20,),
   HomeCard(
     titleText: 'Ранжированные списки',
     leadingIcon: Icon(Icons.list_alt),
     routName: '/home_screen/list',
   ),
+  SizedBox(height: 20,),
   HomeCard(
     titleText: 'Задать вопрос',
     leadingIcon: Icon(Icons.question_mark),
     routName: '/home_screen/question',
-  ),
-  HomeCard(
-    titleText: 'Vote Putin',
-    leadingIcon: Icon(Icons.accessible_forward_sharp),
-    routName: '',
   ),
 ];
